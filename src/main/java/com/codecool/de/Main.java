@@ -14,6 +14,17 @@ import static spark.debug.DebugScreen.enableDebugScreen;
 
 public class Main {
 
+    public static void main(String[] args) {
+
+        DbConnection dbConnection = new DbConnection();
+
+        staticFiles.location("/public");
+        port(getHerokuAssignedPort());
+
+        get("/", Controller::renderHome, new ThymeleafTemplateEngine());
+        enableDebugScreen();
+    }
+
     static int getHerokuAssignedPort() {
         ProcessBuilder processBuilder = new ProcessBuilder();
         if (processBuilder.environment().get("PORT") != null) {
@@ -21,24 +32,7 @@ public class Main {
         }
         return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
     }
-
-    public static void main(String[] args) {
-
-        DbConnection dbConnection = new DbConnection();
-
-        staticFiles.location("/public");
-        port(4444);
-
-
-        get("/", Controller::renderHome, new ThymeleafTemplateEngine());
-
-
-
-        enableDebugScreen();
-    }
-
-
-    }
+}
 
 
 
